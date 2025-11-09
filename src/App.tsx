@@ -1,39 +1,64 @@
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import LogoM8 from './assets/logo_m8.svg'
 import { InputMessage } from './components/input-message'
 import { Message } from './components/message'
+import { cn } from './utils/cn'
 
 export const App = () => {
+  const containerRef = useRef<HTMLDivElement>(null)
   const [messages, setMessages] = useState<string[]>([])
   const [value, setValue] = useState('')
 
   const handleSendMessage = (newMessage: string) => {
+    if (!newMessage.trim()) return
     setMessages((prevMessages) => [...prevMessages, newMessage])
+    setValue('')
   }
 
+  useEffect(() => {
+    if (containerRef.current) {
+      containerRef.current.scrollTop = containerRef.current.scrollHeight
+    }
+  }, [messages])
+
+  const hasMessages = messages.length > 0
+
   return (
-    <main className="h-screen overflow-auto bg-gray-200">
-      <div className="flex w-full flex-col items-center justify-center gap-8 pt-32">
-        <img src={LogoM8} alt="Logo M8" className="w-32" />
+    <main className="flex h-screen flex-col bg-gray-200">
+      <div className="flex items-center justify-center py-6">
+        <img
+          src={LogoM8}
+          alt="Logo M8"
+          className={cn('transition-all duration-300', {
+            'w-32': !hasMessages,
+            'w-20': hasMessages,
+          })}
+        />
+      </div>
 
-        <div className="flex flex-col gap-2 p-4">
-          <InputMessage
-            onChangeValue={setValue}
-            value={value}
-            onSend={() => handleSendMessage(value)}
+      <div
+        ref={containerRef}
+        className="flex w-full min-w-0 flex-1 flex-col gap-3 overflow-y-auto px-4 pb-4"
+      >
+        {messages.map((message, index) => (
+          <Message
+            key={`${index}-${message.slice(0, 10)}`}
+            message={message}
+            direction={index % 2 === 0 ? 'right' : 'left'}
           />
+        ))}
+      </div>
 
-          <p className="px-3 text-center text-xs text-gray-500">
-            O M8 AI pode cometer erros. Por isso, lembre-se de conferir
-            informações relevantes.
-          </p>
-        </div>
-
-        <div className="flex w-full flex-col items-center justify-center gap-2 p-4">
-          {messages.map((message) => (
-            <Message key={message} message={message} />
-          ))}
-        </div>
+      <div className="sticky bottom-0 flex w-full flex-col gap-2 border-t border-gray-300 bg-gray-200 p-4">
+        <InputMessage
+          onChangeValue={setValue}
+          value={value}
+          onSend={() => handleSendMessage(value)}
+        />
+        <p className="text-center text-xs text-gray-500">
+          O M8 AI pode cometer erros. Por isso, lembre-se de conferir
+          informações relevantes.
+        </p>
       </div>
     </main>
   )

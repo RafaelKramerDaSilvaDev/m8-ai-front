@@ -1,19 +1,22 @@
+import { cn } from '../utils/cn'
+
 type MessageProps = {
   message: string
+  direction: 'right' | 'left'
 }
 
-export const Message = ({ message }: MessageProps) => {
+export const Message = ({ message, direction }: MessageProps) => {
   return (
-    <div className="relative w-full max-w-xl bg-white px-4 py-3">
-      <span className="text-md break-words text-gray-500">{message}</span>
-
-      <div className="absolute bottom-0 left-0 flex h-1 w-full">
-        <div className="w-1/6 bg-red-500"></div>
-        <div className="w-1/6 bg-orange-500"></div>
-        <div className="w-1/6 bg-yellow-400"></div>
-        <div className="w-1/6 bg-blue-400"></div>
-        <div className="w-1/6 bg-blue-600"></div>
-        <div className="w-1/6 bg-green-500"></div>
+    <div className={cn('w-full', direction === 'right' ? 'pl-16' : 'pr-16')}>
+      <div
+        className={cn(
+          'relative flex max-w-full sm:max-w-[80%] md:max-w-[70%] lg:max-w-[60%]',
+          'rounded-lg bg-white px-4 py-3 shadow'
+        )}
+      >
+        <span className="text-md leading-relaxed whitespace-pre-wrap text-gray-700">
+          {message}
+        </span>
       </div>
     </div>
   )

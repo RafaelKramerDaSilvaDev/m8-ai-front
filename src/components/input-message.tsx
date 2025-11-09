@@ -1,4 +1,4 @@
-import { Send } from 'lucide-react'
+import { SendHorizonal } from 'lucide-react'
 import TextareaAutosize from 'react-textarea-autosize'
 
 type InputMessageProps = {
@@ -14,21 +14,26 @@ export const InputMessage = ({
 }: InputMessageProps) => {
   return (
     <div className="relative w-full max-w-xl">
-      <TextareaAutosize
-        className="text-md w-full resize-none bg-white px-4 py-3 pr-10 text-gray-500 placeholder-gray-400 shadow outline-none"
-        placeholder="Pergunte alguma coisa"
-        onChange={(event) => onChangeValue(event.target.value)}
-        value={value}
-      />
+      <div className="flex items-end rounded-t-sm bg-white shadow">
+        <TextareaAutosize
+          className="text-md flex-1 resize-none rounded-t-sm bg-white px-4 py-3 text-gray-700 placeholder-gray-400 outline-none"
+          placeholder="Pergunte alguma coisa"
+          onChange={(event) => onChangeValue(event.target.value)}
+          value={value}
+          minRows={1}
+          maxRows={6}
+        />
 
-      <button
-        type="button"
-        className="absolute top-[26px] right-4 -translate-y-1/2 transform cursor-pointer hover:scale-105"
-      >
-        <Send className="h-5 w-5 text-gray-400" onClick={onSend} />
-      </button>
+        <button
+          type="button"
+          onClick={onSend}
+          className="p-3 text-gray-500 transition-transform hover:scale-105"
+        >
+          <SendHorizonal className="h-5 w-5" />
+        </button>
+      </div>
 
-      <div className="absolute bottom-1 left-0 flex h-1 w-full">
+      <div className="bottom-1- absolute left-0 flex h-1 w-full overflow-hidden rounded-b-sm">
         <div className="w-1/6 bg-red-500"></div>
         <div className="w-1/6 bg-orange-500"></div>
         <div className="w-1/6 bg-yellow-400"></div>
