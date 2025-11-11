@@ -1,7 +1,9 @@
+import { useMutation } from '@tanstack/react-query'
 import { useEffect, useRef, useState } from 'react'
 import LogoM8 from './assets/logo_m8.svg'
 import { InputMessage } from './components/input-message'
 import { Message } from './components/message'
+import { ChatService } from './services/chat-service'
 import { cn } from './utils/cn'
 
 export const App = () => {
@@ -9,10 +11,22 @@ export const App = () => {
   const [messages, setMessages] = useState<string[]>([])
   const [value, setValue] = useState('')
 
+  const chatService = new ChatService()
+
+  const sendMessageMutation = useMutation({
+    mutationFn: (message: string) => chatService.sendMessage(message),
+    onSuccess: (answerMessage) =>
+      setMessages((prevMessages) => [...prevMessages, answerMessage]),
+  })
+
   const handleSendMessage = (newMessage: string) => {
     if (!newMessage.trim()) return
+
     setMessages((prevMessages) => [...prevMessages, newMessage])
+
     setValue('')
+
+    sendMessageMutation.mutate(newMessage)
   }
 
   useEffect(() => {
@@ -47,6 +61,10 @@ export const App = () => {
             direction={index % 2 === 0 ? 'right' : 'left'}
           />
         ))}
+
+        {sendMessageMutation.isPending && (
+          <Message direction="left" message="Pensando..." />
+        )}
       </div>
 
       <div className="sticky bottom-0 flex w-full flex-col gap-2 border-t border-gray-300 bg-gray-200 p-4">
