@@ -1,3 +1,4 @@
+import { Fade } from 'react-awesome-reveal'
 import Markdown from 'react-markdown'
 import { cn } from '../utils/cn'
 
@@ -15,7 +16,9 @@ export const Message = ({ message, direction }: MessageProps) => {
       )}
     >
       <div className="w-full rounded-lg bg-white px-4 py-3 shadow">
-        <Markdown>{message}</Markdown>
+        <Fade>
+          <Markdown>{message}</Markdown>
+        </Fade>
       </div>
     </div>
   )

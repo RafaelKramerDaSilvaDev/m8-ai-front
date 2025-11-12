@@ -17,6 +17,7 @@
     "clsx": "^2.1.1",
     "lucide-react": "^0.545.0",
     "react": "^19.1.1",
+    "react-awesome-reveal": "^4.3.1",
     "react-dom": "^19.1.1",
     "react-markdown": "^10.1.0",
     "react-textarea-autosize": "^8.5.9",
