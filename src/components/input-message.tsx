@@ -4,13 +4,13 @@ import TextareaAutosize from 'react-textarea-autosize'
 type InputMessageProps = {
   onChangeValue: (value: string) => void
   value: string
-  onSend: () => void
+  onSubmit: () => void
 }
 
 export const InputMessage = ({
   onChangeValue,
   value,
-  onSend,
+  onSubmit,
 }: InputMessageProps) => {
   return (
     <div className="relative w-full max-w-xl">
@@ -19,6 +19,29 @@ export const InputMessage = ({
           className="text-md flex-1 resize-none rounded-t-sm bg-white px-4 py-3 text-gray-700 placeholder-gray-400 outline-none"
           placeholder="Pergunte alguma coisa"
           onChange={(event) => onChangeValue(event.target.value)}
+          onKeyDown={(e) => {
+            if (e.key !== 'Enter') return
+
+            if (e.ctrlKey || e.metaKey) {
+              e.preventDefault()
+              const el = e.currentTarget
+              const start = el.selectionStart ?? value.length
+              const end = el.selectionEnd ?? value.length
+
+              const next = value.slice(0, start) + '\n' + value.slice(end)
+              onChangeValue(next)
+
+              requestAnimationFrame(() => {
+                el.selectionStart = el.selectionEnd = start + 1
+              })
+              return
+            }
+
+            e.preventDefault()
+            const trimmed = value.trim()
+            if (!trimmed) return
+            onSubmit()
+          }}
           value={value}
           minRows={1}
           maxRows={6}
@@ -26,7 +49,7 @@ export const InputMessage = ({
 
         <button
           type="button"
-          onClick={onSend}
+          onClick={onSubmit}
           className="p-3 text-gray-500 transition-transform hover:scale-105"
         >
           <SendHorizonal className="h-5 w-5" />

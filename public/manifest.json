@@ -1,13 +1,23 @@
 {
   "manifest_version": 3,
-  "name": "M8 AI",
+  "name": "Harpia by M8",
   "version": "1.0.0",
-  "description": "M8 AI",
+  "description": "Harpia by M8",
   "permissions": ["sidePanel"],
   "side_panel": {
     "default_path": "index.html"
   },
+  "icons": {
+    "16": "logo.png",
+    "48": "logo.png",
+    "128": "logo.png"
+  },
   "action": {
-    "default_title": "Abrir/Fechar"
+    "default_title": "Harpia by M8",
+    "default_icon": {
+      "16": "logo.png",
+      "48": "logo.png",
+      "128": "logo.png"
+    }
   }
 }

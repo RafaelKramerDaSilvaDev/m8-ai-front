@@ -4,7 +4,7 @@ export class ChatService {
   public async sendMessage(message: string): Promise<string> {
     const response = await axios<{ answer: string }>({
       method: 'post',
-      url: 'http://localhost:8000/ask',
+      url: 'https://apipdi-production.up.railway.app/ask',
       data: {
         question: message,
       },
